@@ -5,7 +5,8 @@
         v-if="poster"
         v-lazyload="poster"
         class="lazyload"
-        :alt="episode.name">
+        :alt="episode.name"
+        >
 
       <span v-else>
         <!-- eslint-disable-next-line -->
@@ -20,26 +21,53 @@
     <div :class="$style.overview">
       {{ episode.overview | truncate(300) }}
     </div>
-
+    <button
+              v-if="episode.episode_number"
+              class="button button--icon"
+              :class="$style.trailer"
+              type="button"
+              @click="openModal">
+              <!-- eslint-disable-next-line -->
+              <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="#fff"><path d="M3 22v-20l18 10-18 10z"/></svg></span>
+              <span class="txt">Play Now</span>
+            </button>
     <div
       v-if="episode.air_date"
       :class="$style.aired">
       {{ episode.air_date | fullDate }}
     </div>
+    <Modal
+      v-if="modalVisible"
+      :data="epiembed"
+      type="iframe"
+      @close="closeModal" />
   </div>
+  
 </template>
 
 <script>
 import { apiImgUrl } from '~/api';
+import Modal from '~/components/Modal';
 
 export default {
+  components: {
+    Modal,
+  },
   props: {
     episode: {
       type: Object,
       required: true,
     },
+    activeSeason: {
+      type: Number,
+      required: true,
+    },
   },
-
+  data () {
+    return {
+      modalVisible: false,
+    };
+  },
   computed: {
     poster () {
       if (this.episode.still_path) {
@@ -47,6 +75,21 @@ export default {
       } else {
         return null;
       }
+    },
+    epiembed() {
+            return [{
+                src: `https://embed.smashystream.com/playere.php?tmdb=${this.$route.params.id}&season=${this.activeSeason}&episode=${this.episode.episode_number}`,
+            }];
+        },
+    
+  },
+  methods: {
+    openModal () {
+      this.modalVisible = true;
+    },
+
+    closeModal () {
+      this.modalVisible = false;
     },
   },
 };
@@ -131,6 +174,17 @@ export default {
 
   @media (min-width: $breakpoint-large) {
     font-size: 1.4rem;
+  }
+}
+.trailer {
+  margin-top: 3rem;
+
+  @media (max-width: $breakpoint-medium - 1) {
+    display: none;
+  }
+
+  @media (min-width: 1650px) {
+    font-size: 0.9vw;
   }
 }
 </style>

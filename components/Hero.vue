@@ -67,14 +67,23 @@
             </div>
 
             <button
-              v-if="trailer"
+              v-if="!item.number_of_seasons "
               class="button button--icon"
               :class="$style.trailer"
               type="button"
               @click="openModal">
               <!-- eslint-disable-next-line -->
               <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="#fff"><path d="M3 22v-20l18 10-18 10z"/></svg></span>
-              <span class="txt">Watch Trailer</span>
+              <span class="txt">Play Now</span>
+            </button>
+              <button v-else
+              class="button button--icon"
+              :class="$style.trailer"
+              type="button">
+              <nuxt-link :to="{ name: `${type}-id`, params: { id: item.id } }">
+                  <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="#fff"><path d="M3 22v-20l18 10-18 10z"/></svg></span>
+                  <span class="txt">Go to Episodes</span>
+                </nuxt-link>
             </button>
           </div>
         </transition>
@@ -83,14 +92,14 @@
 
     <Modal
       v-if="modalVisible"
-      :data="trailer"
+      :data="embed"
       type="iframe"
       @close="closeModal" />
   </div>
 </template>
 
 <script>
-import { name, stars, yearStart, cert, backdrop, trailer } from '~/mixins/Details';
+import { name, stars, yearStart, cert, backdrop, trailer,embed } from '~/mixins/Details';
 import Modal from '~/components/Modal';
 
 export default {
@@ -105,6 +114,7 @@ export default {
     cert,
     backdrop,
     trailer,
+    embed
   ],
 
   props: {

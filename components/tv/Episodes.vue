@@ -26,7 +26,8 @@
       <EpisodesItem
         v-for="episode in activeEpisodes"
         :key="`episode-${episode.id}`"
-        :episode="episode" />
+        :episode="episode"
+        :activeSeason="activeSeason" />
     </div>
   </div>
 </template>
