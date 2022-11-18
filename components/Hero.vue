@@ -4,7 +4,7 @@
       <div :class="$style.backdrop">
         <div>
           <button
-            v-if="trailer"
+             v-if="!item.number_of_seasons "
             :class="$style.play"
             type="button"
             aria-label="Play Trailer"
@@ -12,6 +12,14 @@
             <!-- eslint-disable-next-line -->
             <svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" viewBox="0 0 55 55"><circle cx="27.5" cy="27.5" r="26.75" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/><path fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.97 40.81L40.64 27.5 20.97 14.19v26.62z"/></svg>
           </button>
+          <button v-else
+              class="button button--icon"
+              :class="$style.play"
+              type="button">
+              <nuxt-link :to="{ name: `${type}-id`, params: { id: item.id } }">
+                <svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" viewBox="0 0 55 55"><circle cx="27.5" cy="27.5" r="26.75" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/><path fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.97 40.81L40.64 27.5 20.97 14.19v26.62z"/></svg>
+                </nuxt-link>
+            </button>
 
           <img
             v-if="backdrop"
